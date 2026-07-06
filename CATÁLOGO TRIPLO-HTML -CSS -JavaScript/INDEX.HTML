@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo DevStudy - HTML + CSS + JavaScript</title>
+    
+    <style>
+        /* ================================================================
+           CSS COMPLETO - ESTILOS DO CATÁLOGO
+           ================================================================ */
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            color: #0a0f1e;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        /* ===== TABS ===== */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 4px;
+        }
+
+        .tab-btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 12px 12px 0 0;
+            background: transparent;
+            color: #94a3b8;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: inherit;
+        }
+
+        .tab-btn:hover {
+            background: #f1f5f9;
+            color: #0a0f1e;
+        }
+
+        .tab-btn.active {
+            background: #0f172a;
+            color: #f59e0b;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== TÍTULOS ===== */
+        h1 {
+            font-size: 2rem;
+            border-bottom: 3px solid #f59e0b;
+            padding-bottom: 12px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 1rem;
+            margin-bottom: 24px;
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            margin: 32px 0 16px;
+            padding-left: 12px;
+            border-left: 4px solid #f59e0b;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 .badge-cat {
+            background: #0f172a;
+            color: #94a3b8;
+            font-size: 0.7rem;
+            padding: 2px 12px;
+            border-radius: 12px;
+            font-weight: 400;
+        }
+
+        /* ===== TABELAS ===== */
+        .tabela-container {
+            overflow-x: auto;
+            margin: 12px 0 24px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            min-width: 500px;
+        }
+
+        table thead {
+            background: #0f172a;
+        }
+
+        table thead th {
+            color: #f59e0b;
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        table tbody tr {
+            border-bottom: 1px solid #f1f5f9;
+            transition: 0.2s;
+        }
+
+        table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        table td {
+            padding: 8px 14px;
+            vertical-align: top;
+        }
+
+        .tag-code {
+            background: #1e293b;
+            color: #f59e0b;
+            padding: 2px 10px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .tag-desc {
+            color: #334155;
+            font-size: 0.85rem;
+        }
+
+        .tag-desc strong {
+            color: #0a0f1e;
+        }
+
+        .tag-exemplo {
+            background: #f1f5f9;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            color: #0a0f1e;
+            display: inline-block;
+            word-break: break-all;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-html { background: #dbeafe; color: #1d4ed8; }
+        .badge-css { background: #dcfce7; color: #16a34a; }
+        .badge-js { background: #fef3c7; color: #b45309; }
+
+        .footer {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.85rem;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 768px) {
+            .container { padding: 16px; }
+            h1 { font-size: 1.5rem; }
+            table { font-size: 0.8rem; min-width: 400px; }
+            table th, table td { padding: 6px 10px; }
+            .tab-btn { padding: 6px 14px; font-size: 0.85rem; }
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 12px; }
+            h1 { font-size: 1.2rem; }
+            table { font-size: 0.7rem; min-width: 320px; }
+            table th, table td { padding: 4px 6px; }
+            .tag-code { font-size: 0.65rem; padding: 1px 6px; }
+            .tag-exemplo { font-size: 0.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>📚 Catálogo DevStudy</h1>
+    <p class="subtitle">Guia completo de HTML + CSS + JavaScript — organizado por categoria</p>
+
+    <!-- ===== TABS ===== -->
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="html">🌐 HTML</button>
+        <button class="tab-btn" data-tab="css">🎨 CSS</button>
+        <button class="tab-btn" data-tab="js">⚡ JavaScript</button>
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- TAB 1: HTML -->
+    <!-- ================================================================ -->
+    <div class="tab-content active" id="tab-html">
+
+        <h2>📄 Estrutura do Documento <span class="badge-cat">8 tags</span></h2>
+        <div class="tabela-container">
+            <table>
+                <thead><tr><th>Tag</th><th>O que faz?</th><th>Exemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="tag-code">&lt;!DOCTYPE html&gt;</span></td><td><span class="tag-desc">Declara que o documento é <strong>HTML5</strong></span></td><td><span class="tag-exemplo">&lt;!DOCTYPE html&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;html&gt;</span></td><td><span class="tag-desc"><strong>Elemento raiz</strong> da página</span></td><td><span class="tag-exemplo">&lt;html lang="pt-br"&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;head&gt;</span></td><td><span class="tag-desc">Metadados da página <strong>(não visível)</strong></span></td><td><span class="tag-exemplo">&lt;head&gt;...&lt;/head&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;title&gt;</span></td><td><span class="tag-desc">Título na <strong>aba do navegador</strong></span></td><td><span class="tag-exemplo">&lt;title&gt;Meu Site&lt;/title&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;meta&gt;</span></td><td><span class="tag-desc">Define <strong>metadados</strong> (charset, viewport, descrição)</span></td><td><span class="tag-exemplo">&lt;meta charset="utf-8"&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;link&gt;</span></td><td><span class="tag-desc">Conecta <strong>CSS externo</strong></span></td><td><span class="tag-exemplo">&lt;link rel="stylesheet" href="style.css"&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;style&gt;</span></td><td><span class="tag-desc">Define <strong>CSS interno</strong></span></td><td><span class="tag-exemplo">&lt;style&gt;body{color:red;}&lt;/style&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;script&gt;</span></td><td><span class="tag-desc">Insere <strong>JavaScript</strong> na página</span></td><td><span class="tag-exemplo">&lt;script&gt;console.log("Olá")&lt;/script&gt;</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>🏗️ Estrutura Semântica <span class="badge-cat">10 tags</span></h2>
+        <div class="tabela-container">
+            <table>
+                <thead><tr><th>Tag</th><th>O que faz?</th><th>Exemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="tag-code">&lt;body&gt;</span></td><td><span class="tag-desc"><strong>Conteúdo visível</strong> da página</span></td><td><span class="tag-exemplo">&lt;body&gt;...&lt;/body&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;header&gt;</span></td><td><span class="tag-desc"><strong>Cabeçalho</strong> da página ou seção</span></td><td><span class="tag-exemplo">&lt;header&gt;&lt;h1&gt;Título&lt;/h1&gt;&lt;/header&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;nav&gt;</span></td><td><span class="tag-desc"><strong>Navegação</strong> principal</span></td><td><span class="tag-exemplo">&lt;nav&gt;&lt;ul&gt;&lt;li&gt;&lt;a href="#"&gt;Home&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/nav&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;main&gt;</span></td><td><span class="tag-desc"><strong>Conteúdo principal</strong> (apenas 1 por página)</span></td><td><span class="tag-exemplo">&lt;main&gt;...&lt;/main&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;article&gt;</span></td><td><span class="tag-desc"><strong>Conteúdo independente</strong> (post, notícia)</span></td><td><span class="tag-exemplo">&lt;article&gt;&lt;h2&gt;Título&lt;/h2&gt;&lt;p&gt;Conteúdo&lt;/p&gt;&lt;/article&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;section&gt;</span></td><td><span class="tag-desc"><strong>Agrupamento temático</strong> de conteúdo</span></td><td><span class="tag-exemplo">&lt;section id="servicos"&gt;...&lt;/section&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;aside&gt;</span></td><td><span class="tag-desc"><strong>Conteúdo lateral</strong> (sidebar)</span></td><td><span class="tag-exemplo">&lt;aside&gt;&lt;p&gt;Anúncio&lt;/p&gt;&lt;/aside&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;footer&gt;</span></td><td><span class="tag-desc"><strong>Rodapé</strong> da página</span></td><td><span class="tag-exemplo">&lt;footer&gt;&copy; 2026&lt;/footer&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;address&gt;</span></td><td><span class="tag-desc"><strong>Contato</strong> do autor</span></td><td><span class="tag-exemplo">&lt;address&gt;email@email.com&lt;/address&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;h1&gt; a &lt;h6&gt;</span></td><td><span class="tag-desc"><strong>Títulos</strong> (h1 mais importante)</span></td><td><span class="tag-exemplo">&lt;h1&gt;Título Principal&lt;/h1&gt;</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>📝 Texto e Listas <span class="badge-cat">10 tags</span></h2>
+        <div class="tabela-container">
+            <table>
+                <thead><tr><th>Tag</th><th>O que faz?</th><th>Exemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="tag-code">&lt;p&gt;</span></td><td><span class="tag-desc"><strong>Parágrafo</strong> de texto</span></td><td><span class="tag-exemplo">&lt;p&gt;Texto do parágrafo.&lt;/p&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;div&gt;</span></td><td><span class="tag-desc"><strong>Container genérico</strong> em bloco</span></td><td><span class="tag-exemplo">&lt;div class="container"&gt;...&lt;/div&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;span&gt;</span></td><td><span class="tag-desc"><strong>Container inline</strong> para estilizar</span></td><td><span class="tag-exemplo">&lt;span style="color:red"&gt;texto&lt;/span&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;br&gt;</span></td><td><span class="tag-desc"><strong>Quebra de linha</strong></span></td><td><span class="tag-exemplo">Linha 1&lt;br&gt;Linha 2</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;hr&gt;</span></td><td><span class="tag-desc"><strong>Linha horizontal</strong> separadora</span></td><td><span class="tag-exemplo">&lt;hr&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;pre&gt;</span></td><td><span class="tag-desc"><strong>Texto pré-formatado</strong> (mantém espaços)</span></td><td><span class="tag-exemplo">&lt;pre&gt;Texto    com    espaços&lt;/pre&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;ul&gt;</span></td><td><span class="tag-desc"><strong>Lista não ordenada</strong> (marcadores)</span></td><td><span class="tag-exemplo">&lt;ul&gt;&lt;li&gt;Item&lt;/li&gt;&lt;/ul&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;ol&gt;</span></td><td><span class="tag-desc"><strong>Lista ordenada</strong> (numerada)</span></td><td><span class="tag-exemplo">&lt;ol&gt;&lt;li&gt;Item&lt;/li&gt;&lt;/ol&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;li&gt;</span></td><td><span class="tag-desc"><strong>Item de lista</strong></span></td><td><span class="tag-exemplo">&lt;li&gt;Item da lista&lt;/li&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;blockquote&gt;</span></td><td><span class="tag-desc"><strong>Citação em bloco</strong></span></td><td><span class="tag-exemplo">&lt;blockquote&gt;Texto citado.&lt;/blockquote&gt;</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>✍️ Texto Inline <span class="badge-cat">12 tags</span></h2>
+        <div class="tabela-container">
+            <table>
+                <thead><tr><th>Tag</th><th>O que faz?</th><th>Exemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="tag-code">&lt;a&gt;</span></td><td><span class="tag-desc"><strong>Link</strong> para outra página</span></td><td><span class="tag-exemplo">&lt;a href="https://google.com"&gt;Google&lt;/a&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;strong&gt;</span></td><td><span class="tag-desc"><strong>Negrito semântico</strong> (importância)</span></td><td><span class="tag-exemplo">&lt;strong&gt;Importante!&lt;/strong&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;em&gt;</span></td><td><span class="tag-desc"><strong>Itálico semântico</strong> (ênfase)</span></td><td><span class="tag-exemplo">&lt;em&gt;enfatizado&lt;/em&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;u&gt;</span></td><td><span class="tag-desc"><strong>Sublinhado</strong></span></td><td><span class="tag-exemplo">&lt;u&gt;sublinhado&lt;/u&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;s&gt;</span></td><td><span class="tag-desc"><strong>Texto riscado</strong></span></td><td><span class="tag-exemplo">&lt;s&gt;R$ 100&lt;/s&gt; R$ 80</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;mark&gt;</span></td><td><span class="tag-desc"><strong>Texto destacado</strong></span></td><td><span class="tag-exemplo">&lt;mark&gt;destaque&lt;/mark&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;small&gt;</span></td><td><span class="tag-desc"><strong>Texto secundário</strong> (rodapé, avisos)</span></td><td><span class="tag-exemplo">&lt;small&gt;&copy; 2026&lt;/small&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;sub&gt;</span></td><td><span class="tag-desc"><strong>Subscrito</strong></span></td><td><span class="tag-exemplo">H&lt;sub&gt;2&lt;/sub&gt;O</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;sup&gt;</span></td><td><span class="tag-desc"><strong>Sobrescrito</strong></span></td><td><span class="tag-exemplo">10&lt;sup&gt;2&lt;/sup&gt; = 100</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;code&gt;</span></td><td><span class="tag-desc"><strong>Código inline</strong></span></td><td><span class="tag-exemplo">&lt;code&gt;let x = 10;&lt;/code&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;abbr&gt;</span></td><td><span class="tag-desc"><strong>Abreviação</strong> com tooltip</span></td><td><span class="tag-exemplo">&lt;abbr title="HyperText Markup Language"&gt;HTML&lt;/abbr&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;time&gt;</span></td><td><span class="tag-desc"><strong>Data/hora</strong></span></td><td><span class="tag-exemplo">&lt;time datetime="2026-07-06"&gt;6 de julho&lt;/time&gt;</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>🎬 Mídia <span class="badge-cat">8 tags</span></h2>
+        <div class="tabela-container">
+            <table>
+                <thead><tr><th>Tag</th><th>O que faz?</th><th>Exemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="tag-code">&lt;img&gt;</span></td><td><span class="tag-desc"><strong>Imagem</strong></span></td><td><span class="tag-exemplo">&lt;img src="foto.jpg" alt="Descrição"&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;audio&gt;</span></td><td><span class="tag-desc"><strong>Áudio</strong></span></td><td><span class="tag-exemplo">&lt;audio controls&gt;&lt;source src="musica.mp3"&gt;&lt;/audio&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;video&gt;</span></td><td><span class="tag-desc"><strong>Vídeo</strong></span></td><td><span class="tag-exemplo">&lt;video controls&gt;&lt;source src="video.mp4"&gt;&lt;/video&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;source&gt;</span></td><td><span class="tag-desc"><strong>Fonte de mídia</strong> (formatos alternativos)</span></td><td><span class="tag-exemplo">&lt;source src="video.mp4" type="video/mp4"&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;canvas&gt;</span></td><td><span class="tag-desc"><strong>Desenho</strong> com JavaScript</span></td><td><span class="tag-exemplo">&lt;canvas id="canvas"&gt;&lt;/canvas&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;svg&gt;</span></td><td><span class="tag-desc"><strong>Gráficos vetoriais</strong></span></td><td><span class="tag-exemplo">&lt;svg&gt;&lt;circle cx="50" cy="50" r="40" fill="blue"/&gt;&lt;/svg&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;figure&gt;</span></td><td><span class="tag-desc"><strong>Conteúdo ilustrativo</strong></span></td><td><span class="tag-exemplo">&lt;figure&gt;&lt;img src="foto.jpg"&gt;&lt;figcaption&gt;Legenda&lt;/figcaption&gt;&lt;/figure&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;iframe&gt;</span></td><td><span class="tag-desc"><strong>Frame embutido</strong></span></td><td><span class="tag-exemplo">&lt;iframe src="https://example.com"&gt;&lt;/iframe&gt;</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>📋 Formulários <span class="badge-cat">10 tags</span></h2>
+        <div class="tabela-container">
+            <table>
+                <thead><tr><th>Tag</th><th>O que faz?</th><th>Exemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="tag-code">&lt;form&gt;</span></td><td><span class="tag-desc"><strong>Container</strong> de formulário</span></td><td><span class="tag-exemplo">&lt;form action="/enviar" method="POST"&gt;...&lt;/form&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;input&gt;</span></td><td><span class="tag-desc"><strong>Campo de entrada</strong> (texto, email, senha, etc.)</span></td><td><span class="tag-exemplo">&lt;input type="text" name="nome"&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;textarea&gt;</span></td><td><span class="tag-desc"><strong>Área de texto</strong> (múltiplas linhas)</span></td><td><span class="tag-exemplo">&lt;textarea rows="3"&gt;&lt;/textarea&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;select&gt;</span></td><td><span class="tag-desc"><strong>Menu dropdown</strong></span></td><td><span class="tag-exemplo">&lt;select&gt;&lt;option&gt;Opção&lt;/option&gt;&lt;/select&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;option&gt;</span></td><td><span class="tag-desc"><strong>Opção</strong> do select</span></td><td><span class="tag-exemplo">&lt;option value="1"&gt;Opção 1&lt;/option&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;button&gt;</span></td><td><span class="tag-desc"><strong>Botão</strong> clicável</span></td><td><span class="tag-exemplo">&lt;button type="submit"&gt;Enviar&lt;/button&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;label&gt;</span></td><td><span class="tag-desc"><strong>Rótulo</strong> do campo</span></td><td><span class="tag-exemplo">&lt;label for="nome"&gt;Nome:&lt;/label&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;fieldset&gt;</span></td><td><span class="tag-desc"><strong>Agrupa campos</strong></span></td><td><span class="tag-exemplo">&lt;fieldset&gt;&lt;legend&gt;Dados&lt;/legend&gt;...&lt;/fieldset&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;legend&gt;</span></td><td><span class="tag-desc"><strong>Legenda</strong> do fieldset</span></td><td><span class="tag-exemplo">&lt;legend&gt;Informações&lt;/legend&gt;</span></td></tr>
+                    <tr><td><span class="tag-code">&lt;progress&gt;</span></td><td><span class="tag-desc"><strong>Barra de progresso</strong></span></td><td><span class="tag-exemplo">&lt;progress value="70" max="100"&gt;&lt;/progress&gt;</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div><!-- FIM TAB HTML -->
+
+    <!-- ================================================================ -->
+    <!-- TAB 2: CSS -->
+    <!-- ================================================================ -->
+    <div class="tab-content" id="tab-css">
+
+        <h2>🎨 Seletores CSS <span class="badge-cat">8 seletores</span></h2>
+        <div class="tabela-container">
+            <table>
+                <thead><tr><th>Seletor</th><th>O que faz?</th><th>Exemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="tag-code">elemento</span></td><td><span class="tag-desc">Seleciona todas as tags com esse nome</span></td><td><span class="tag-exemplo">p { color: red; }</span></td></tr>
+                    <tr><td><span class="tag-code">.classe</span></td><td><span class="tag-desc">Seleciona elementos com a <strong>classe</strong> específica</span></td><td><span class="tag-exemplo">.destaque { font-weight: bold; }</span></td></tr>
+                    <tr><td><span class="tag-code">#id</span></td><td><span class="tag-desc">Seleciona um elemento com <strong>ID</strong> único</span></td><td><span class="tag-exemplo">#logo { width: 200px; }</span></td></tr>
+                    <tr><td><span class="tag-code">*</span></td><td><span class="tag-desc">Seleciona <strong>todos</strong> os elementos</span></td><td><span class="tag-exemplo">* { margin: 0; }</span></td></tr>
+                    <tr><td><span class="tag-code">elemento, elemento</span></td><td><span class="tag-desc">Seleciona <strong>múltiplos</strong> elementos</span></td><td><span class="tag-exemplo">h1, h2, h3 { color: blue; }</span></td></tr>
+                    <tr><td><span class="tag-code">elemento elemento</span></td><td><span class="tag-desc">Seleciona <strong>descendentes</strong></span></td><td><span class="tag-exemplo">div p { margin: 10px; }</span></td></tr>
+                    <tr><td><span class="tag-code">elemento > elemento</span></td><td><span class="tag-desc">Seleciona <strong>filho direto</strong></span></td><td><span class="tag-exemplo">ul > li { list-style: none; }</span></td></tr>
+                    <tr><td><span class="tag-code">[atributo]</span></td><td><span class="tag-desc">Seleciona por <strong>atributo</strong></span></td><td><span class="tag-exemplo">[type="text"] { border: 1px solid; }</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>📦 Box Model <span class="badge-cat">6 propriedades</span></h2>
+        <div class="tabela-container">
+            <table>
+                <thead><tr><th>Propriedade</th><th>O que faz?</th><th>Exemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="tag-code">margin</span></td><td><span class="tag-desc"><strong>Espaço externo</strong> (fora da borda)</span></td><td><span class="tag-exemplo">margin: 20px;</span></td></tr>
+                    <tr><td><span class="tag-code">padding</span></td><td><span class="tag-desc"><strong>Espaço interno</strong> (dentro da borda)</span></td><td><span class="tag-exemplo">padding: 10px 20px;</span></td></tr>
+                    <tr><td><span class="tag-code">border</span></td><td><span class="tag-desc"><strong>Borda</strong> do elemento</span></td><td><span class="tag-exemplo">border: 1px solid black;</span></td></tr>
+                    <tr><td><span class="tag-code">width</span></td><td><span class="tag-desc"><strong>Largura</strong> do elemento</span></td><td><span class="tag-exemplo">width: 300px;</span></td></tr>
+                    <tr><td><span class="tag-code">height</span></td><td><span class="tag-desc"><strong>Altura</strong> do elemento</span></td><td><span class="tag-exemplo">height: 200px;</span></td></tr>
+                    <tr><td><span class="tag-code">box-sizing</span></td><td><span class="tag-desc">Como a largura/altura é calculada</span></td><td><span class="tag-exemplo">box-sizing: border-box;</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>🎨 Cores e Fundos <span class="badge-cat">6 propriedades</span></h2>
+        <div class="tabela-container">
+            <table>
+                <thead><tr><th>Propriedade</th><th>O que faz?</th><th>Exemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="tag-code">color</span></td><td><span class="tag-desc"><strong>Cor do texto</strong></span></td><td><span class="tag-exemplo">color: #ff0000;</span></td></tr>
+                    <tr><td><span class="tag-code">background-color</span></td><td><span class="tag-desc"><strong>Cor de fundo</strong></span></td><td><span class="tag-exemplo">background-color: #f0f4f8;</span></td></tr>
+                    <tr><td><span class="tag-code">background-image</span></td><td><span class="tag-desc"><strong>Imagem de fundo</strong></span></td><td><span class="tag-exemplo">background-image: url('fundo.jpg');</span></td></tr>
+                    <tr><td><span class="tag-code">background-repeat</span></td><td><span class="tag-desc">Repetição da <strong>imagem de fundo</strong></span></td><td><span class="tag-exemplo">background-repeat: no-repeat;</span></td></tr>
+                    <tr><td><span class="tag-code">background-size</span></td><td><span class="tag-desc"><strong>Tamanho</strong> da imagem de fundo</span></td><td><span class="tag-exemplo">background-size: cover;</span></td></tr>
+                    <tr><td><span class="tag-code">background-position</span></td><td><span class="tag-desc"><strong>Posição</strong> da imagem de fundo</span></td><td><span class="tag-exemplo">background-position: center;</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>📝 Fontes e Textos <span class="badge-cat">8 propriedades</span></h2>
+        <div class="tabela-container">
+            <table>
+                <thead><tr><th>Propriedade</th><th>O que faz?</th><th>Exemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="tag-code">font-family</span></td><td><span class="tag-desc"><strong>Fonte</strong> do texto</span></td><td><span class="tag-exemplo">font-family: Arial, sans-serif;</span></td></tr>
+                    <tr><td><span class="tag-code">font-size</span></td><td><span class="tag-desc"><strong>Tamanho</strong> da fonte</span></td><td><span class="tag-exemplo">font-size: 16px;</span></td></tr>
+                    <tr><td><span class="tag-code">font-weight</span></td><td><span class="tag-desc"><strong>Espessura</strong> da fonte (negrito)</span></td><td><span class="tag-exemplo">font-weight: bold;</span></td></tr>
+                    <tr><td><span class="tag-code">text-align</span></td><td><span class="tag-desc"><strong>Alinhamento</strong> do texto</span></td><td><span class="tag-exemplo">text-align: center;</span></td></tr>
+                    <tr><td><span class="tag-code">text-decoration</span></td><td><span class="tag-desc"><strong>Decoração</strong> do texto</span></td><td><span class="tag-exemplo">text-decoration: underline;</span></td></tr>
+                    <tr><td><span class="tag-code">line-height</span></td><td><span class="tag-desc"><strong>Altura da linha</strong></span></td><td><span class="tag-exemplo">line-height: 1.6;</span></td></tr>
+                    <tr><td><span class="tag-code">letter-spacing</span></td><td><span class="tag-desc"><strong>Espaçamento</strong> entre letras</span></td><td><span class="tag-exemplo">letter-spacing: 2px;</span></td></tr>
+                    <tr><td><span class="tag-code">text-transform</span></td><td><span class="tag-desc"><strong>Transformação</strong> do texto</span></td><td><span class="tag-exemplo">text-transform: uppercase;</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>📐 Layout (Flexbox) <span class="badge-cat">8 propriedades</span></h2>
+        <div class="tabela-container">
+            <table>
+                <thead><tr><th>Propriedade</th><th>O que faz?</th><th>Exemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="tag-code">display: flex</span></td><td><span class="tag-desc">Ativa o <strong>Flexbox</strong></span></td><td><span class="tag-exemplo">display: flex;</span></td></tr>
+                    <tr><td><span class="tag-code">flex-direction</span></td><td><span class="tag-desc"><strong>Direção</strong> dos itens</span></td><td><span class="tag-exemplo">flex-direction: row;</span></td></tr>
+                    <tr><td><span class="tag-code">justify-content</span></td><td><span class="tag-desc"><strong>Alinhamento horizontal</strong></span></td><td><span class="tag-exemplo">justify-content: center;</span></td></tr>
+                    <tr><td><span class="tag-code">align-items</span></td><td><span class="tag-desc"><strong>Alinhamento vertical</strong></span></td><td><span class="tag-exemplo">align-items: center;</span></td></tr>
+                    <tr><td><span class="tag-code">flex-wrap</span></td><td><span class="tag-desc"><strong>Quebra de linha</strong></span></td><td><span class="tag-exemplo">flex-wrap: wrap;</span></td></tr>
+                    <tr><td><span class="tag-code">gap</span></td><td><span class="tag-desc"><strong>Espaçamento</strong> entre itens</span></td><td><span class="tag-exemplo">gap: 16px;</span></td></tr>
+                    <tr><td><span class="tag-code">flex</span></td><td><span class="tag-desc">Define <strong>crescimento</strong> do item</span></td><td><span class="tag-exemplo">flex: 1;</span></td></tr>
+                    <tr><td><span class="tag-code">align-self</span></td><td><span class="tag-desc"><strong>Alinhamento</strong> individual</span></td><td><span class="tag-exemplo">align-self: flex-start;</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>📐 Layout (Grid) <span class="badge-cat">6 propriedades</span></h2>
+        <div class="tabela-container">
+            <table>
+                <thead><tr><th>Propriedade</th><th>O que faz?</th><th>Exemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="tag-code">display: grid</span></td><td><span class="tag-desc">Ativa o <strong>Grid</strong></span></td><td><span class="tag-exemplo">display: grid;</span></td></tr>
+                    <tr><td><span class="tag-code">grid-template-columns</span></td><td><span class="tag-desc">Define <strong>colunas</strong></span></td><td><span class="tag-exemplo">grid-template-columns: 1fr 1fr 1fr;</span></td></tr>
+                    <tr><td><span class="tag-code">grid-template-rows</span></td><td><span class="tag-desc">Define <strong>linhas</strong></span></td><td><span class="tag-exemplo">grid-template-rows: auto 200px;</span></td></tr>
+                    <tr><td><span class="tag-code">grid-column</span></td><td><span class="tag-desc">Ocupa <strong>colunas</strong> específicas</span></td><td><span class="tag-exemplo">grid-column: 1 / 3;</span></td></tr>
+                    <tr><td><span class="tag-code">grid-row</span></td><td><span class="tag-desc">Ocupa <strong>linhas</strong> específicas</span></td><td><span class="tag-exemplo">grid-row: 1 / 2;</span></td></tr>
+                    <tr><td><span class="tag-code">gap</span></td><td><span class="tag-desc"><strong>Espaçamento</strong> entre células</span></td><td><span class="tag-exemplo">gap: 16px;</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>🎯 Posicionamento <span class="badge-cat">5 propriedades</span></h2>
+        <div class="tabela-container">
+            <table>
+                <thead><tr><th>Propriedade</th><th>O que faz?</th><th>Exemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="tag-code">position: relative</span></td><td><span class="tag-desc"><strong>Posição relativa</strong> à original</span></td><td><span class="tag-exemplo">position: relative; top: 10px;</span></td></tr>
+                    <tr><td><span class="tag-code">position: absolute</span></td><td><span class="tag-desc"><strong>Posição absoluta</strong> ao pai</span></td><td><span class="tag-exemplo">position: absolute; top: 0;</span></td></tr>
+                    <tr><td><span class="tag-code">position: fixed</span></td><td><span class="tag-desc"><strong>Posição fixa</strong> na tela</span></td><td><span class="tag-exemplo">position: fixed; bottom: 20px;</span></td></tr>
+                    <tr><td><span class="tag-code">position: sticky</span></td><td><span class="tag-desc"><strong>Gruda</strong> ao rolar a página</span></td><td><span class="tag-exemplo">position: sticky; top: 0;</span></td></tr>
+                    <tr><td><span class="tag-code">z-index</span></td><td><span class="tag-desc"><strong>Camada</strong> de sobreposição</span></td><td><span class="tag-exemplo">z-index: 10;</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>✨ Animações <span class="badge-cat">6 propriedades</span></h2>
+        <div class="tabela-container">
+            <table>
+                <thead><tr><th>Propriedade</th><th>O que faz?</th><th>Exemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="tag-code">transition</span></td><td><span class="tag-desc"><strong>Transição</strong> suave de propriedades</span></td><td><span class="tag-exemplo">transition: all 0.3s ease;</span></td></tr>
+                    <tr><td><span class="tag-code">@keyframes</span></td><td><span class="tag-desc">Define os <strong>quadros</strong> da animação</span></td><td><span class="tag-exemplo">@keyframes fade { 0% { opacity: 0; } 100% { opacity: 1; } }</span></td></tr>
+                    <tr><td><span class="tag-code">animation</span></td><td><span class="tag-desc"><strong>Aplica</strong> a animação</span></td><td><span class="tag-exemplo">animation: fade 2s infinite;</span></td></tr>
+                    <tr><td><span class="tag-code">transform</span></td><td><span class="tag-desc">Transforma o elemento (escala, rotação)</span></td><td><span class="tag-exemplo">transform: scale(1.2);</span></td></tr>
+                    <tr><td><span class="tag-code">transform: rotate</span></td><td><span class="tag-desc"><strong>Rotação</strong> do elemento</span></td><td><span class="tag-exemplo">transform: rotate(45deg);</span></td></tr>
+                    <tr><td><span class="tag-code">transform: translate</span></td><td><span class="tag-desc"><strong>Movimento</strong> do elemento</span></td><td><span class="tag-exemplo">transform: translateX(50px);</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>📱 Responsividade <span class="badge-cat">3 propriedades</span></h2>
+        <div class="tabela-container">
+            <table>
+                <thead><tr><th>Propriedade</th><th>O que faz?</th><th>Exemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="tag-code">@media</span></td><td><span class="tag-desc"><strong>Media Query</strong> para diferentes telas</span></td><td><span class="tag-exemplo">@media (max-width: 768px) { ... }</span></td></tr>
+                    <tr><td><span class="tag-code">max-width</span></td><td><span class="tag-desc"><strong>Largura máxima</strong> do elemento</span></td><td><span class="tag-exemplo">max-width: 100%;</span></td></tr>
+                    <tr><td><span class="tag-code">min-width</span></td><td><span class="tag-desc"><strong>Largura mínima</strong> do elemento</span></td><td><span class="tag-exemplo">min-width: 300px;</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div><!-- FIM TAB CSS -->
+
+    <!-- ================================================================ -->
+    <!-- TAB 3: JAVASCRIPT -->
+    <!-- ================================================================ -->
+    <div class="tab-content" id="tab-js">
+
+        <h2>📦 Variáveis e Tipos <span class="badge-cat">7 conceitos</span></h2>
+        <div class="tabela-container">
+            <table>
+                <thead><tr><th>Conceito</th><th>O que faz?</th><th>Exemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="tag-code">let</span></td><td><span class="tag-desc">Declara uma variável que <strong>pode mudar</strong></span></td><td><span class="tag-exemplo">let nome = "João";</span></td></tr>
+                    <tr><td><span class="tag-code">const</span></td><td><span class="tag-desc">Declara uma variável que <strong>NÃO muda</strong></span></td><td><span class="tag-exemplo">const idade = 25;</span></td></tr>
+                    <tr><td><span class="tag-code">string</span></td><td><span class="tag-desc"><strong>Texto</strong> (entre aspas)</span></td><td><span class="tag-exemplo">"Olá mundo"</span></td></tr>
+                    <tr><td><span class="tag-code">number</span></td><td><span class="tag-desc"><strong>Número</strong> (inteiro ou decimal)</span></td><td><span class="tag-exemplo">42, 3.14</span></td></tr>
+                    <tr><td><span class="tag-code">boolean</span></td><td><span class="tag-desc"><strong>Verdadeiro/Falso</strong></span></td><td><span class="tag-exemplo">true, false</span></td></tr>
+                    <tr><td><span class="tag-code">array</span></td><td><span class="tag-desc"><strong>Lista</strong> de valores</span></td><td><span class="tag-exemplo">[1, 2, 3, "texto"]</span></td></tr>
+                    <tr><td><span class="tag-code">object</span></td><td><span class="tag-desc"><strong>Coleção</strong> de propriedades</span></td><td><span class="tag-exemplo">{ nome: "João", idade: 25 }</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>📝 Funções <span class="badge-cat">6 conceitos</span></h2>
+        <div class="tabela-container">
+            <table>
+                <thead><tr><th>Conceito</th><th>O que faz?</th><th>Exemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="tag-code">function</span></td><td><span class="tag-desc"><strong>Função tradicional</strong></span></td><td><span class="tag-exemplo">function soma(a,b) { return a+b; }</span></td></tr>
+                    <tr><td><span class="tag-code">arrow function</span></td><td><span class="tag-desc"><strong>Função flecha</strong> (moderna)</span></td><td><span class="tag-exemplo">const soma = (a,b) => a+b;</span></td></tr>
+                    <tr><td><span class="tag-code">return</span></td><td><span class="tag-desc"><strong>Retorna</strong> um valor</span></td><td><span class="tag-exemplo">return "Olá";</span></td></tr>
+                    <tr><td><span class="tag-code">parâmetros</span></td><td><span class="tag-desc"><strong>Argumentos</strong> que a função recebe</span></td><td><span class="tag-exemplo">function nome(param1, param2)</span></td></tr>
+                    <tr><td><span class="tag-code">callback</span></td><td><span class="tag-desc">Função passada como <strong>argumento</strong></span></td><td><span class="tag-exemplo">forEach((item) => { ... })</span></td></tr>
+                    <tr><td><span class="tag-code">IIFE</span></td><td><span class="tag-desc">Função executada <strong>imediatamente</strong></span></td><td><span class="tag-exemplo">(function() { ... })();</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>🔀 Condicionais e Loops <span class="badge-cat">6 conceitos</span></h2>
+        <div class="tabela-container">
+            <table>
+                <thead><tr><th>Conceito</th><th>O que faz?</th><th>Exemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="tag-code">if/else</span></td><td><span class="tag-desc"><strong>Condicional</strong> (se/senão)</span></td><td><span class="tag-exemplo">if (x > 0) { ... } else { ... }</span></td></tr>
+                    <tr><td><span class="tag-code">switch</span></td><td><span class="tag-desc"><strong>Múltiplas</strong> condições</span></td><td><span class="tag-exemplo">switch (valor) { case 1: ... }</span></td></tr>
+                    <tr><td><span class="tag-code">for</span></td><td><span class="tag-desc"><strong>Loop</strong> com contador</span></td><td><span class="tag-exemplo">for (let i=0; i<10; i++)</span></td></tr>
+                    <tr><td><span class="tag-code">while</span></td><td><span class="tag-desc"><strong>Loop</strong> enquanto condição verdadeira</span></td><td><span class="tag-exemplo">while (condicao) { ... }</span></td></tr>
+                    <tr><td><span class="tag-code">for...of</span></td><td><span class="tag-desc">Percorre <strong>valores</strong> de um array</span></td><td><span class="tag-exemplo">for (let item of lista)</span></td></tr>
+                    <tr><td><span class="tag-code">forEach</span></td><td><span class="tag-desc">Percorre <strong>array</strong> com callback</span></td><td><span class="tag-exemplo">lista.forEach(item => { ... })</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>🌐 DOM (Manipulação) <span class="badge-cat">10 métodos</span></h2>
+        <div class="tabela-container">
+            <table>
+                <thead><tr><th>Método</th><th>O que faz?</th><th>Exemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="tag-code">getElementById</span></td><td><span class="tag-desc">Seleciona um elemento pelo <strong>ID</strong></span></td><td><span class="tag-exemplo">document.getElementById('id')</span></td></tr>
+                    <tr><td><span class="tag-code">querySelector</span></td><td><span class="tag-desc">Seleciona o <strong>primeiro</strong> elemento que corresponde</span></td><td><span class="tag-exemplo">document.querySelector('.classe')</span></td></tr>
+                    <tr><td><span class="tag-code">querySelectorAll</span></td><td><span class="tag-desc">Seleciona <strong>todos</strong> os elementos que correspondem</span></td><td><span class="tag-exemplo">document.querySelectorAll('p')</span></td></tr>
+                    <tr><td><span class="tag-code">textContent</span></td><td><span class="tag-desc"><strong>Altera</strong> o texto do elemento</span></td><td><span class="tag-exemplo">elemento.textContent = "Novo texto"</span></td></tr>
+                    <tr><td><span class="tag-code">innerHTML</span></td><td><span class="tag-desc"><strong>Altera</strong> o HTML interno</span></td><td><span class="tag-exemplo">elemento.innerHTML = "&lt;b&gt;negrito&lt;/b&gt;"</span></td></tr>
+                    <tr><td><span class="tag-code">classList.add</span></td><td><span class="tag-desc"><strong>Adiciona</strong> uma classe CSS</span></td><td><span class="tag-exemplo">elemento.classList.add('classe')</span></td></tr>
+                    <tr><td><span class="tag-code">classList.remove</span></td><td><span class="tag-desc"><strong>Remove</strong> uma classe CSS</span></td><td><span class="tag-exemplo">elemento.classList.remove('classe')</span></td></tr>
+                    <tr><td><span class="tag-code">classList.toggle</span></td><td><span class="tag-desc"><strong>Alterna</strong> uma classe CSS</span></td><td><span class="tag-exemplo">elemento.classList.toggle('classe')</span></td></tr>
+                    <tr><td><span class="tag-code">createElement</span></td><td><span class="tag-desc"><strong>Cria</strong> um novo elemento</span></td><td><span class="tag-exemplo">document.createElement('div')</span></td></tr>
+                    <tr><td><span class="tag-code">appendChild</span></td><td><span class="tag-desc"><strong>Adiciona</strong> um elemento filho</span></td><td><span class="tag-exemplo">pai.appendChild(filho)</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>🎯 Eventos <span class="badge-cat">8 eventos</span></h2>
+        <div class="tabela-container">
+            <table>
+                <thead><tr><th>Evento</th><th>O que faz?</th><th>Exemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="tag-code">click</span></td><td><span class="tag-desc"><strong>Clique</strong> do mouse</span></td><td><span class="tag-exemplo">elemento.addEventListener('click', fn)</span></td></tr>
+                    <tr><td><span class="tag-code">submit</span></td><td><span class="tag-desc"><strong>Envio</strong> de formulário</span></td><td><span class="tag-exemplo">form.addEventListener('submit', fn)</span></td></tr>
+                    <tr><td><span class="tag-code">keydown</span></td><td><span class="tag-desc"><strong>Tecla</strong> pressionada</span></td><td><span class="tag-exemplo">document.addEventListener('keydown', fn)</span></td></tr>
+                    <tr><td><span class="tag-code">mouseover</span></td><td><span class="tag-desc"><strong>Mouse</strong> sobre o elemento</span></td><td><span class="tag-exemplo">elemento.addEventListener('mouseover', fn)</span></td></tr>
+                    <tr><td><span class="tag-code">mouseout</span></td><td><span class="tag-desc"><strong>Mouse</strong> sai do elemento</span></td><td><span class="tag-exemplo">elemento.addEventListener('mouseout', fn)</span></td></tr>
+                    <tr><td><span class="tag-code">load</span></td><td><span class="tag-desc">Página <strong>termina de carregar</strong></span></td><td><span class="tag-exemplo">window.addEventListener('load', fn)</span></td></tr>
+                    <tr><td><span class="tag-code">scroll</span></td><td><span class="tag-desc"><strong>Rolagem</strong> da página</span></td><td><span class="tag-exemplo">window.addEventListener('scroll', fn)</span></td></tr>
+                    <tr><td><span class="tag-code">change</span></td><td><span class="tag-desc"><strong>Mudança</strong> em input/select</span></td><td><span class="tag-exemplo">input.addEventListener('change', fn)</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>📊 Arrays e Objetos <span class="badge-cat">8 métodos</span></h2>
+        <div class="tabela-container">
+            <table>
+                <thead><tr><th>Método</th><th>O que faz?</th><th>Exemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="tag-code">map()</span></td><td><span class="tag-desc"><strong>Transforma</strong> cada item do array</span></td><td><span class="tag-exemplo">lista.map(item => item * 2)</span></td></tr>
+                    <tr><td><span class="tag-code">filter()</span></td><td><span class="tag-desc"><strong>Filtra</strong> os itens do array</span></td><td><span class="tag-exemplo">lista.filter(item => item > 5)</span></td></tr>
+                    <tr><td><span class="tag-code">reduce()</span></td><td><span class="tag-desc"><strong>Reduz</strong> o array a um valor</span></td><td><span class="tag-exemplo">lista.reduce((acc, item) => acc + item, 0)</span></td></tr>
+                    <tr><td><span class="tag-code">push()</span></td><td><span class="tag-desc"><strong>Adiciona</strong> item no final</span></td><td><span class="tag-exemplo">lista.push(10)</span></td></tr>
+                    <tr><td><span class="tag-code">pop()</span></td><td><span class="tag-desc"><strong>Remove</strong> do final</span></td><td><span class="tag-exemplo">lista.pop()</span></td></tr>
+                    <tr><td><span class="tag-code">Object.keys()</span></td><td><span class="tag-desc"><strong>Lista</strong> as chaves de um objeto</span></td><td><span class="tag-exemplo">Object.keys(objeto)</span></td></tr>
+                    <tr><td><span class="tag-code">Object.values()</span></td><td><span class="tag-desc"><strong>Lista</strong> os valores de um objeto</span></td><td><span class="tag-exemplo">Object.values(objeto)</span></td></tr>
+                    <tr><td><span class="tag-code">spread (...) </span></td><td><span class="tag-desc"><strong>Espalha</strong> elementos</span></td><td><span class="tag-exemplo">[...lista1, ...lista2]</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>⚡ Async/Await e Fetch <span class="badge-cat">6 conceitos</span></h2>
+        <div class="tabela-container">
+            <table>
+                <thead><tr><th>Conceito</th><th>O que faz?</th><th>Exemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="tag-code">async</span></td><td><span class="tag-desc">Declara uma função <strong>assíncrona</strong></span></td><td><span class="tag-exemplo">async function buscar()</span></td></tr>
+                    <tr><td><span class="tag-code">await</span></td><td><span class="tag-desc"><strong>Espera</strong> uma Promise</span></td><td><span class="tag-exemplo">await fetch(url)</span></td></tr>
+                    <tr><td><span class="tag-code">fetch()</span></td><td><span class="tag-desc">Faz uma <strong>requisição HTTP</strong></span></td><td><span class="tag-exemplo">fetch('https://api.com')</span></td></tr>
+                    <tr><td><span class="tag-code">.then()</span></td><td><span class="tag-desc">Executa quando a Promise <strong>resolve</strong></span></td><td><span class="tag-exemplo">.then(response => response.json())</span></td></tr>
+                    <tr><td><span class="tag-code">.catch()</span></td><td><span class="tag-desc">Captura <strong>erros</strong></span></td><td><span class="tag-exemplo">.catch(error => console.error(error))</span></td></tr>
+                    <tr><td><span class="tag-code">try/catch</span></td><td><span class="tag-desc">Bloco para <strong>tratar erros</strong></span></td><td><span class="tag-exemplo">try { ... } catch (e) { ... }</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>💾 LocalStorage <span class="badge-cat">4 métodos</span></h2>
+        <div class="tabela-container">
+            <table>
+                <thead><tr><th>Método</th><th>O que faz?</th><th>Exemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="tag-code">setItem</span></td><td><span class="tag-desc"><strong>Salva</strong> dados no navegador</span></td><td><span class="tag-exemplo">localStorage.setItem('chave', 'valor')</span></td></tr>
+                    <tr><td><span class="tag-code">getItem</span></td><td><span class="tag-desc"><strong>Lê</strong> dados do navegador</span></td><td><span class="tag-exemplo">localStorage.getItem('chave')</span></td></tr>
+                    <tr><td><span class="tag-code">removeItem</span></td><td><span class="tag-desc"><strong>Remove</strong> dados do navegador</span></td><td><span class="tag-exemplo">localStorage.removeItem('chave')</span></td></tr>
+                    <tr><td><span class="tag-code">clear</span></td><td><span class="tag-desc"><strong>Limpa</strong> todos os dados</span></td><td><span class="tag-exemplo">localStorage.clear()</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>📦 Classes e POO <span class="badge-cat">5 conceitos</span></h2>
+        <div class="tabela-container">
+            <table>
+                <thead><tr><th>Conceito</th><th>O que faz?</th><th>Exemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="tag-code">class</span></td><td><span class="tag-desc">Define uma <strong>classe</strong></span></td><td><span class="tag-exemplo">class Pessoa { }</span></td></tr>
+                    <tr><td><span class="tag-code">constructor</span></td><td><span class="tag-desc"><strong>Inicializa</strong> a classe</span></td><td><span class="tag-exemplo">constructor(nome) { this.nome = nome; }</span></td></tr>
+                    <tr><td><span class="tag-code">extends</span></td><td><span class="tag-desc"><strong>Herda</strong> de outra classe</span></td><td><span class="tag-exemplo">class Aluno extends Pessoa</span></td></tr>
+                    <tr><td><span class="tag-code">super</span></td><td><span class="tag-desc">Chama o <strong>construtor da classe pai</strong></span></td><td><span class="tag-exemplo">super(nome)</span></td></tr>
+                    <tr><td><span class="tag-code">método</span></td><td><span class="tag-desc"><strong>Função</strong> dentro da classe</span></td><td><span class="tag-exemplo">falar() { return "Olá"; }</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>🔧 ES6+ Moderno <span class="badge-cat">6 conceitos</span></h2>
+        <div class="tabela-container">
+            <table>
+                <thead><tr><th>Conceito</th><th>O que faz?</th><th>Exemplo</th></tr></thead>
+                <tbody>
+                    <tr><td><span class="tag-code">template literals</span></td><td><span class="tag-desc"><strong>Interpolação</strong> de strings</span></td><td><span class="tag-exemplo">`Olá ${nome}`</span></td></tr>
+                    <tr><td><span class="tag-code">destructuring</span></td><td><span class="tag-desc"><strong>Desestrutura</strong> objetos/arrays</span></td><td><span class="tag-exemplo">const { nome } = pessoa</span></td></tr>
+                    <tr><td><span class="tag-code">default params</span></td><td><span class="tag-desc"><strong>Valor padrão</strong> em parâmetros</span></td><td><span class="tag-exemplo">function soma(a = 0, b = 0)</span></td></tr>
+                    <tr><td><span class="tag-code">rest operator</span></td><td><span class="tag-desc"><strong>Agrupa</strong> argumentos restantes</span></td><td><span class="tag-exemplo">function (...args)</span></td></tr>
+                    <tr><td><span class="tag-code">optional chaining</span></td><td><span class="tag-desc">Acessa propriedades <strong>com segurança</strong></span></td><td><span class="tag-exemplo">usuario?.nome</span></td></tr>
+                    <tr><td><span class="tag-code">nullish coalescing</span></td><td><span class="tag-desc"><strong>Valor padrão</strong> para null/undefined</span></td><td><span class="tag-exemplo">nome ?? "Anônimo"</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div><!-- FIM TAB JS -->
+
+    <!-- ===== FOOTER ===== -->
+    <div class="footer">
+        📚 DevStudy - Catálogo Triplo: HTML + CSS + JavaScript<br>
+        <span style="font-size:0.8rem; color:#94a3b8;">Use este guia como referência para seus estudos</span>
+    </div>
+
+</div>
+
+<!-- ================================================================ -->
+<!-- JAVASCRIPT - TABS E INTERATIVIDADE -->
+<!-- ================================================================ -->
+<script>
+    (function() {
+        'use strict';
+
+        // ===== TABS =====
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = {
+            html: document.getElementById('tab-html'),
+            css: document.getElementById('tab-css'),
+            js: document.getElementById('tab-js')
+        };
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active de todas as tabs
+                tabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+
+                // Esconde todos os conteúdos
+                Object.values(contents).forEach(c => c.classList.remove('active'));
+
+                // Mostra o conteúdo correspondente
+                const target = this.dataset.tab;
+                if (contents[target]) {
+                    contents[target].classList.add('active');
+                }
+            });
+        });
+
+        // ===== CONTADOR DE TAGS =====
+        function contarTags() {
+            const htmlRows = document.querySelectorAll('#tab-html .tabela-container tbody tr').length;
+            const cssRows = document.querySelectorAll('#tab-css .tabela-container tbody tr').length;
+            const jsRows = document.querySelectorAll('#tab-js .tabela-container tbody tr').length;
+
+            // Atualiza badges
+            const badges = document.querySelectorAll('.badge-cat');
+            if (badges.length >= 8) {
+                // HTML badges
+                const htmlBadges = document.querySelectorAll('#tab-html .badge-cat');
+                if (htmlBadges.length >= 8) {
+                    const counts = [8, 10, 10, 12, 8, 10, 8, 10];
+                    htmlBadges.forEach((b, i) => {
+                        if (counts[i]) b.textContent = counts[i] + ' tags';
+                    });
+                }
+
+                // CSS badges
+                const cssBadges = document.querySelectorAll('#tab-css .badge-cat');
+                if (cssBadges.length >= 8) {
+                    const counts = [8, 6, 6, 8, 8, 6, 5, 6, 3];
+                    cssBadges.forEach((b, i) => {
+                        if (counts[i]) b.textContent = counts[i] + ' propriedades';
+                    });
+                }
+
+                // JS badges
+                const jsBadges = document.querySelectorAll('#tab-js .badge-cat');
+                if (jsBadges.length >= 8) {
+                    const counts = [7, 6, 6, 10, 8, 8, 6, 4, 5, 6];
+                    jsBadges.forEach((b, i) => {
+                        if (counts[i]) b.textContent = counts[i] + ' conceitos';
+                    });
+                }
+            }
+        }
+
+        contarTags();
+
+        console.log('📚 Catálogo DevStudy carregado!');
+        console.log(`🌐 HTML: ${document.querySelectorAll('#tab-html .tabela-container tbody tr').length} tags`);
+        console.log(`🎨 CSS: ${document.querySelectorAll('#tab-css .tabela-container tbody tr').length} propriedades`);
+        console.log(`⚡ JS: ${document.querySelectorAll('#tab-js .tabela-container tbody tr').length} conceitos`);
+
+    })();
+</script>
+
+</body>
+</html>

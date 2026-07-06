@@ -1,0 +1,804 @@
+/* ================================================================
+   DEVSTUDY - CATÁLOGO DE TAGS HTML
+   CSS COMPLETO E COMPATÍVEL
+   ================================================================ */
+
+/* ================================================================
+   RESET E BASE
+   ================================================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f4f8;
+    color: #0a0f1e;
+    padding: 40px 20px;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* ================================================================
+   CONTAINER PRINCIPAL
+   ================================================================ */
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+/* ================================================================
+   TÍTULOS
+   ================================================================ */
+
+h1 {
+    font-size: 2rem;
+    color: #0a0f1e;
+    border-bottom: 3px solid #f59e0b;
+    padding-bottom: 12px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+h1 .contador-tags {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #94a3b8;
+    margin-left: 0;
+}
+
+.subtitle {
+    color: #64748b;
+    font-size: 1rem;
+    margin-bottom: 32px;
+}
+
+h2 {
+    font-size: 1.4rem;
+    color: #0a0f1e;
+    margin: 40px 0 16px;
+    padding-left: 12px;
+    border-left: 4px solid #f59e0b;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+h2 .badge-cat {
+    background: #0f172a;
+    color: #94a3b8;
+    font-size: 0.7rem;
+    padding: 2px 12px;
+    border-radius: 12px;
+    font-weight: 400;
+}
+
+/* ================================================================
+   TOOLBAR (Barra de ferramentas - JavaScript)
+   ================================================================ */
+
+.toolbar-estudo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding: 16px 20px;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    align-items: center;
+}
+
+.toolbar-estudo input {
+    padding: 8px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    width: 100%;
+    max-width: 300px;
+    background: white;
+    color: #0a0f1e;
+    transition: 0.3s;
+}
+
+.toolbar-estudo input:focus {
+    outline: none;
+    border-color: #f59e0b;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+}
+
+.toolbar-estudo input::placeholder {
+    color: #94a3b8;
+}
+
+/* ===== Botões da toolbar ===== */
+
+.filtro-btn {
+    padding: 6px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    background: transparent;
+    color: #64748b;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: 0.3s;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.filtro-btn:hover {
+    background: #1e293b;
+    color: white;
+}
+
+.filtro-btn.ativo {
+    background: #0f172a;
+    color: #f59e0b;
+}
+
+.filtro-btn.ativo:hover {
+    background: #0f172a;
+    color: #f59e0b;
+}
+
+.btn-acao {
+    padding: 6px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    background: transparent;
+    color: #64748b;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: 0.3s;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.btn-acao:hover {
+    background: #1e293b;
+    color: white;
+}
+
+.btn-acao.ativo {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+/* ================================================================
+   TABELAS
+   ================================================================ */
+
+.tabela-container {
+    overflow-x: auto;
+    margin: 12px 0 24px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+    background: #ffffff;
+}
+
+.tabela-container table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+    min-width: 600px;
+}
+
+.tabela-container table thead {
+    background: #0f172a;
+}
+
+.tabela-container table thead th {
+    color: #f59e0b;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.tabela-container table tbody tr {
+    border-bottom: 1px solid #f1f5f9;
+    transition: all 0.3s ease;
+}
+
+.tabela-container table tbody tr:hover {
+    background: #f8fafc !important;
+}
+
+.tabela-container table tbody tr td {
+    padding: 10px 16px;
+    vertical-align: top;
+}
+
+/* ================================================================
+   TAGS - DESTAQUES
+   ================================================================ */
+
+.tag-code {
+    background: #1e293b;
+    color: #f59e0b;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    display: inline-block;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.tag-code.antiga {
+    color: #94a3b8;
+    text-decoration: line-through;
+}
+
+.tag-code:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.2);
+}
+
+.tag-desc {
+    color: #334155;
+    font-size: 0.9rem;
+}
+
+.tag-desc strong {
+    color: #0a0f1e;
+}
+
+.tag-exemplo {
+    background: #f1f5f9;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    color: #0a0f1e;
+    display: inline-block;
+    word-break: break-all;
+    transition: all 0.3s ease;
+}
+
+.tag-exemplo:hover {
+    background: #e2e8f0;
+}
+
+.tag-onde {
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+.tag-onde .local {
+    background: #f1f5f9;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+}
+
+/* ================================================================
+   BOTÕES DE AÇÃO DA TAG (JavaScript)
+   ================================================================ */
+
+.tag-acoes {
+    display: flex;
+    gap: 4px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+}
+
+.tag-acoes button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    color: #94a3b8;
+}
+
+.tag-acoes button:hover {
+    background: #e2e8f0;
+    transform: scale(1.15);
+}
+
+.tag-acoes button:active {
+    transform: scale(0.9);
+}
+
+/* ================================================================
+   BADGES
+   ================================================================ */
+
+.badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.badge-estrutura {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.badge-semantica {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.badge-texto {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.badge-midia {
+    background: #fce7f3;
+    color: #be185d;
+}
+
+.badge-form {
+    background: #e0e7ff;
+    color: #4338ca;
+}
+
+.badge-tabela {
+    background: #cffafe;
+    color: #0891b2;
+}
+
+.badge-interatividade {
+    background: #ede9fe;
+    color: #6d28d9;
+}
+
+.badge-obsoleta {
+    background: #fecaca;
+    color: #dc2626;
+}
+
+/* ================================================================
+   FEEDBACK FLUTUANTE (JavaScript)
+   ================================================================ */
+
+.feedback-flutuante {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #0f172a;
+    color: #f59e0b;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    animation: fadeInUp 0.4s ease;
+    border: 1px solid #f59e0b;
+    max-width: 90%;
+    text-align: center;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* ================================================================
+   DIVISOR
+   ================================================================ */
+
+.divider {
+    border: none;
+    border-top: 2px solid #e2e8f0;
+    margin: 40px 0;
+}
+
+/* ================================================================
+   FOOTER
+   ================================================================ */
+
+.footer {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #e2e8f0;
+}
+
+/* ================================================================
+   MODO ESTUDO (JavaScript)
+   ================================================================ */
+
+/* Modo estudo ativo - esconde exemplos */
+.tabela-container.modo-estudo {
+    border: 2px dashed #f59e0b;
+    background: #faf8f0;
+}
+
+/* ================================================================
+   RESPONSIVIDADE
+   ================================================================ */
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .container {
+        padding: 28px;
+    }
+    
+    .tabela-container table {
+        font-size: 0.85rem;
+        min-width: 500px;
+    }
+    
+    .tabela-container table th,
+    .tabela-container table td {
+        padding: 8px 12px;
+    }
+}
+
+/* Mobile Grande */
+@media (max-width: 768px) {
+    body {
+        padding: 20px 12px;
+    }
+    
+    .container {
+        padding: 16px;
+        border-radius: 16px;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+    
+    h1 .contador-tags {
+        font-size: 0.8rem;
+    }
+    
+    .subtitle {
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+    }
+    
+    h2 {
+        font-size: 1.1rem;
+        margin: 24px 0 12px;
+        padding-left: 8px;
+    }
+    
+    h2 .badge-cat {
+        font-size: 0.6rem;
+        padding: 2px 8px;
+    }
+    
+    /* Toolbar mobile */
+    .toolbar-estudo {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 12px 16px;
+        gap: 10px;
+    }
+    
+    .toolbar-estudo input {
+        max-width: 100%;
+        font-size: 0.85rem;
+    }
+    
+    .toolbar-estudo > div {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .filtro-btn,
+    .btn-acao {
+        font-size: 0.75rem;
+        padding: 4px 10px;
+    }
+    
+    /* Tabela mobile */
+    .tabela-container {
+        border-radius: 8px;
+        margin: 8px 0 16px;
+    }
+    
+    .tabela-container table {
+        font-size: 0.75rem;
+        min-width: 400px;
+    }
+    
+    .tabela-container table th,
+    .tabela-container table td {
+        padding: 6px 8px;
+    }
+    
+    .tag-code {
+        font-size: 0.7rem;
+        padding: 1px 6px;
+    }
+    
+    .tag-exemplo {
+        font-size: 0.7rem;
+        padding: 2px 6px;
+    }
+    
+    .tag-desc {
+        font-size: 0.75rem;
+    }
+    
+    .tag-acoes button {
+        font-size: 0.7rem;
+        padding: 2px 4px;
+    }
+    
+    /* Feedback mobile */
+    .feedback-flutuante {
+        font-size: 0.85rem;
+        padding: 10px 16px;
+        bottom: 16px;
+        width: 90%;
+    }
+}
+
+/* Mobile Pequeno */
+@media (max-width: 480px) {
+    body {
+        padding: 12px 8px;
+    }
+    
+    .container {
+        padding: 12px;
+        border-radius: 12px;
+    }
+    
+    h1 {
+        font-size: 1.2rem;
+    }
+    
+    h2 {
+        font-size: 0.95rem;
+        margin: 16px 0 8px;
+        padding-left: 6px;
+        border-left-width: 3px;
+    }
+    
+    .tabela-container table {
+        font-size: 0.65rem;
+        min-width: 320px;
+    }
+    
+    .tabela-container table th,
+    .tabela-container table td {
+        padding: 4px 6px;
+    }
+    
+    .tag-code {
+        font-size: 0.6rem;
+        padding: 1px 4px;
+    }
+    
+    .tag-exemplo {
+        font-size: 0.6rem;
+        padding: 1px 4px;
+    }
+    
+    .tag-desc {
+        font-size: 0.65rem;
+    }
+    
+    .tag-acoes button {
+        font-size: 0.6rem;
+        padding: 1px 3px;
+    }
+    
+    .filtro-btn,
+    .btn-acao {
+        font-size: 0.65rem;
+        padding: 3px 8px;
+    }
+    
+    .toolbar-estudo {
+        padding: 8px 10px;
+        gap: 6px;
+    }
+    
+    .toolbar-estudo input {
+        font-size: 0.75rem;
+        padding: 6px 10px;
+    }
+    
+    .badge {
+        font-size: 0.5rem;
+        padding: 1px 6px;
+    }
+    
+    .feedback-flutuante {
+        font-size: 0.75rem;
+        padding: 8px 12px;
+        border-radius: 8px;
+    }
+}
+
+/* ================================================================
+   IMPRESSÃO (Print-friendly)
+   ================================================================ */
+
+@media print {
+    .toolbar-estudo {
+        display: none !important;
+    }
+    
+    .tag-acoes {
+        display: none !important;
+    }
+    
+    .feedback-flutuante {
+        display: none !important;
+    }
+    
+    .tabela-container {
+        border: 1px solid #ccc !important;
+        break-inside: avoid;
+    }
+    
+    .tabela-container table tbody tr {
+        break-inside: avoid;
+    }
+    
+    .container {
+        box-shadow: none !important;
+        padding: 20px !important;
+    }
+    
+    h1 .contador-tags {
+        display: none !important;
+    }
+    
+    body {
+        background: white !important;
+        padding: 20px !important;
+    }
+}
+
+/* ================================================================
+   SCROLLBAR PERSONALIZADA
+   ================================================================ */
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* ================================================================
+   UTILITÁRIOS
+   ================================================================ */
+
+.text-center {
+    text-align: center;
+}
+
+.text-muted {
+    color: #94a3b8;
+}
+
+.mt-8 {
+    margin-top: 8px;
+}
+
+.mt-16 {
+    margin-top: 16px;
+}
+
+.mb-16 {
+    margin-bottom: 16px;
+}
+
+.gap-8 {
+    gap: 8px;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.items-center {
+    align-items: center;
+}
+
+/* ================================================================
+   ANIMAÇÕES
+   ================================================================ */
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.tag-code.favorito {
+    animation: pulse 0.5s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tabela-container {
+    animation: slideDown 0.3s ease;
+}
+
+/* ================================================================
+   DESTAQUE DE LINHA (JavaScript)
+   ================================================================ */
+
+.tabela-container tbody tr.destacado {
+    border-left: 4px solid #f59e0b !important;
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.1) !important;
+    background: #fefcf5 !important;
+}
+
+/* ================================================================
+   FAVORITOS (JavaScript)
+   ================================================================ */
+
+.tabela-container tbody tr.favorito {
+    background: #fef3c7 !important;
+}
+
+.tabela-container tbody tr.favorito:hover {
+    background: #fde68a !important;
+}

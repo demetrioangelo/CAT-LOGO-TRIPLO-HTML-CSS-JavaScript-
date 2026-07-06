@@ -1,0 +1,717 @@
+// ================================================================
+// DEVSTUDY - CATÁLOGO DE TAGS HTML
+// JavaScript Interativo - Compatível com o HTML
+// ================================================================
+
+(function() {
+    'use strict';
+
+    // ============================================================
+    // CONFIGURAÇÕES
+    // ============================================================
+    const CONFIG = {
+        localStorageKey: 'devstudy_favoritos',
+        modoEstudoKey: 'devstudy_modo_estudo'
+    };
+
+    // ============================================================
+    // ESTADO
+    // ============================================================
+    const STATE = {
+        favoritos: [],
+        modoEstudo: false,
+        filtroAtual: 'todos',
+        buscaAtual: ''
+    };
+
+    // ============================================================
+    // INICIALIZAÇÃO
+    // ============================================================
+    function init() {
+        carregarEstado();
+        criarToolbar();
+        adicionarBotoesAcao();
+        adicionarBusca();
+        adicionarFiltros();
+        adicionarEventosTags();
+        atualizarContadores();
+        aplicarModoEstudo();
+        
+        console.log('📚 DevStudy - Catálogo de Tags carregado!');
+        console.log(`📌 ${document.querySelectorAll('.tabela-container tbody tr').length} tags disponíveis`);
+    }
+
+    // ============================================================
+    // CARREGAR ESTADO DO LOCALSTORAGE
+    // ============================================================
+    function carregarEstado() {
+        // Favoritos
+        const favoritosSalvos = localStorage.getItem(CONFIG.localStorageKey);
+        STATE.favoritos = favoritosSalvos ? JSON.parse(favoritosSalvos) : [];
+
+        // Modo de estudo
+        const modoSalvo = localStorage.getItem(CONFIG.modoEstudoKey);
+        STATE.modoEstudo = modoSalvo === 'true';
+    }
+
+    // ============================================================
+    // SALVAR ESTADO
+    // ============================================================
+    function salvarEstado() {
+        localStorage.setItem(CONFIG.localStorageKey, JSON.stringify(STATE.favoritos));
+        localStorage.setItem(CONFIG.modoEstudoKey, String(STATE.modoEstudo));
+    }
+
+    // ============================================================
+    // CRIAR TOOLBAR (Barra de ferramentas)
+    // ============================================================
+    function criarToolbar() {
+        const container = document.querySelector('.container');
+        if (!container) return;
+
+        // Verifica se já existe
+        if (document.querySelector('.toolbar-estudo')) return;
+
+        const toolbar = document.createElement('div');
+        toolbar.className = 'toolbar-estudo';
+        toolbar.style.cssText = `
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding: 16px 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            align-items: center;
+        `;
+
+        toolbar.innerHTML = `
+            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; flex:1;">
+                <!-- Busca -->
+                <div style="display:flex; align-items:center; gap:8px; flex:1; min-width:200px;">
+                    <span style="color:#94a3b8;">🔍</span>
+                    <input type="text" id="busca-tags" placeholder="Buscar tag..." style="
+                        padding: 8px 14px;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 8px;
+                        font-size: 0.9rem;
+                        width: 100%;
+                        max-width: 300px;
+                        background: white;
+                        color: #0a0f1e;
+                        transition: 0.3s;
+                    ">
+                </div>
+
+                <!-- Filtros -->
+                <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                    <button class="filtro-btn ativo" data-filtro="todos" style="
+                        padding: 6px 14px;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 20px;
+                        background: #0f172a;
+                        color: #f59e0b;
+                        cursor: pointer;
+                        font-size: 0.8rem;
+                        transition: 0.3s;
+                        font-weight: 600;
+                    ">📌 Todos</button>
+                    <button class="filtro-btn" data-filtro="estrutura" style="
+                        padding: 6px 14px;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 20px;
+                        background: transparent;
+                        color: #64748b;
+                        cursor: pointer;
+                        font-size: 0.8rem;
+                        transition: 0.3s;
+                    ">📄 Estrutura</button>
+                    <button class="filtro-btn" data-filtro="semantica" style="
+                        padding: 6px 14px;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 20px;
+                        background: transparent;
+                        color: #64748b;
+                        cursor: pointer;
+                        font-size: 0.8rem;
+                        transition: 0.3s;
+                    ">🏗️ Semântica</button>
+                    <button class="filtro-btn" data-filtro="texto" style="
+                        padding: 6px 14px;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 20px;
+                        background: transparent;
+                        color: #64748b;
+                        cursor: pointer;
+                        font-size: 0.8rem;
+                        transition: 0.3s;
+                    ">📝 Texto</button>
+                    <button class="filtro-btn" data-filtro="midia" style="
+                        padding: 6px 14px;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 20px;
+                        background: transparent;
+                        color: #64748b;
+                        cursor: pointer;
+                        font-size: 0.8rem;
+                        transition: 0.3s;
+                    ">🎬 Mídia</button>
+                    <button class="filtro-btn" data-filtro="formulario" style="
+                        padding: 6px 14px;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 20px;
+                        background: transparent;
+                        color: #64748b;
+                        cursor: pointer;
+                        font-size: 0.8rem;
+                        transition: 0.3s;
+                    ">📋 Formulário</button>
+                    <button class="filtro-btn" data-filtro="tabela" style="
+                        padding: 6px 14px;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 20px;
+                        background: transparent;
+                        color: #64748b;
+                        cursor: pointer;
+                        font-size: 0.8rem;
+                        transition: 0.3s;
+                    ">📊 Tabela</button>
+                </div>
+
+                <!-- Ações -->
+                <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                    <button id="btn-modo-estudo" style="
+                        padding: 6px 16px;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 20px;
+                        background: ${STATE.modoEstudo ? '#fef3c7' : 'transparent'};
+                        color: ${STATE.modoEstudo ? '#b45309' : '#64748b'};
+                        cursor: pointer;
+                        font-size: 0.8rem;
+                        transition: 0.3s;
+                        font-weight: 600;
+                    ">
+                        ${STATE.modoEstudo ? '📖 Modo Estudo Ativo' : '🎯 Ativar Modo Estudo'}
+                    </button>
+                    <button id="btn-favoritos" style="
+                        padding: 6px 16px;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 20px;
+                        background: transparent;
+                        color: #64748b;
+                        cursor: pointer;
+                        font-size: 0.8rem;
+                        transition: 0.3s;
+                    ">
+                        ⭐ Favoritos (${STATE.favoritos.length})
+                    </button>
+                    <button id="btn-limpar-filtros" style="
+                        padding: 6px 16px;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 20px;
+                        background: transparent;
+                        color: #94a3b8;
+                        cursor: pointer;
+                        font-size: 0.8rem;
+                        transition: 0.3s;
+                    ">
+                        🔄 Limpar
+                    </button>
+                </div>
+            </div>
+        `;
+
+        container.insertBefore(toolbar, container.querySelector('h1').nextSibling);
+    }
+
+    // ============================================================
+    // ADICIONAR BOTÕES DE AÇÃO NAS TAGS
+    // ============================================================
+    function adicionarBotoesAcao() {
+        document.querySelectorAll('.tabela-container tbody tr').forEach(row => {
+            // Verifica se já tem botões
+            if (row.querySelector('.tag-acoes')) return;
+
+            const tdOnde = row.querySelector('td:last-child');
+            if (!tdOnde) return;
+
+            const tagNome = row.querySelector('.tag-code');
+            if (!tagNome) return;
+
+            const nomeTag = tagNome.textContent.trim();
+
+            // Cria container de ações
+            const acoes = document.createElement('div');
+            acoes.className = 'tag-acoes';
+            acoes.style.cssText = `
+                display: flex;
+                gap: 4px;
+                margin-top: 4px;
+                flex-wrap: wrap;
+            `;
+
+            // Botão favorito
+            const isFavorito = STATE.favoritos.includes(nomeTag);
+            const btnFav = document.createElement('button');
+            btnFav.textContent = isFavorito ? '⭐' : '☆';
+            btnFav.title = isFavorito ? 'Remover dos favoritos' : 'Adicionar aos favoritos';
+            btnFav.style.cssText = `
+                background: transparent;
+                border: none;
+                cursor: pointer;
+                font-size: 0.8rem;
+                padding: 2px 4px;
+                border-radius: 4px;
+                transition: 0.3s;
+                color: ${isFavorito ? '#f59e0b' : '#94a3b8'};
+            `;
+            btnFav.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleFavorito(nomeTag, row);
+            });
+            acoes.appendChild(btnFav);
+
+            // Botão copiar
+            const btnCopy = document.createElement('button');
+            btnCopy.textContent = '📋';
+            btnCopy.title = 'Copiar tag';
+            btnCopy.style.cssText = `
+                background: transparent;
+                border: none;
+                cursor: pointer;
+                font-size: 0.8rem;
+                padding: 2px 4px;
+                border-radius: 4px;
+                transition: 0.3s;
+                color: #94a3b8;
+            `;
+            btnCopy.addEventListener('click', function(e) {
+                e.stopPropagation();
+                copiarTag(nomeTag);
+            });
+            acoes.appendChild(btnCopy);
+
+            // Botão destacar
+            const btnDestaque = document.createElement('button');
+            btnDestaque.textContent = '👁️';
+            btnDestaque.title = 'Destacar tag';
+            btnDestaque.style.cssText = `
+                background: transparent;
+                border: none;
+                cursor: pointer;
+                font-size: 0.8rem;
+                padding: 2px 4px;
+                border-radius: 4px;
+                transition: 0.3s;
+                color: #94a3b8;
+            `;
+            btnDestaque.addEventListener('click', function(e) {
+                e.stopPropagation();
+                destacarTag(row);
+            });
+            acoes.appendChild(btnDestaque);
+
+            tdOnde.appendChild(acoes);
+        });
+    }
+
+    // ============================================================
+    // FUNÇÕES DAS AÇÕES
+    // ============================================================
+
+    // Toggle favorito
+    function toggleFavorito(tagNome, row) {
+        const index = STATE.favoritos.indexOf(tagNome);
+        if (index > -1) {
+            STATE.favoritos.splice(index, 1);
+            row.querySelector('.tag-acoes button:first-child').textContent = '☆';
+            row.querySelector('.tag-acoes button:first-child').style.color = '#94a3b8';
+            row.querySelector('.tag-acoes button:first-child').title = 'Adicionar aos favoritos';
+            row.style.background = 'transparent';
+        } else {
+            STATE.favoritos.push(tagNome);
+            row.querySelector('.tag-acoes button:first-child').textContent = '⭐';
+            row.querySelector('.tag-acoes button:first-child').style.color = '#f59e0b';
+            row.querySelector('.tag-acoes button:first-child').title = 'Remover dos favoritos';
+            row.style.background = '#fef3c7';
+        }
+        salvarEstado();
+        atualizarContadores();
+        mostrarFeedback(tagNome + ' ' + (index > -1 ? 'removido dos' : 'adicionado aos') + ' favoritos!');
+    }
+
+    // Copiar tag
+    function copiarTag(tagNome) {
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(tagNome).then(() => {
+                mostrarFeedback('✅ ' + tagNome + ' copiado!');
+            }).catch(() => {
+                fallbackCopiar(tagNome);
+            });
+        } else {
+            fallbackCopiar(tagNome);
+        }
+    }
+
+    function fallbackCopiar(texto) {
+        const ta = document.createElement('textarea');
+        ta.value = texto;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+            document.execCommand('copy');
+            mostrarFeedback('✅ ' + texto + ' copiado!');
+        } catch(e) {
+            alert('📋 Copie manualmente: ' + texto);
+        }
+        document.body.removeChild(ta);
+    }
+
+    // Destacar tag
+    function destacarTag(row) {
+        const todasRows = document.querySelectorAll('.tabela-container tbody tr');
+        const isDestacada = row.style.borderLeft === '4px solid #f59e0b';
+        
+        todasRows.forEach(r => {
+            r.style.borderLeft = 'none';
+            r.style.boxShadow = 'none';
+        });
+        
+        if (!isDestacada) {
+            row.style.borderLeft = '4px solid #f59e0b';
+            row.style.boxShadow = '0 0 20px rgba(245, 158, 11, 0.1)';
+            row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            mostrarFeedback('👁️ Tag destacada!');
+        } else {
+            mostrarFeedback('👁️ Destaque removido');
+        }
+    }
+
+    // ============================================================
+    // FEEDBACK (Mensagens temporárias)
+    // ============================================================
+    function mostrarFeedback(mensagem) {
+        const existing = document.querySelector('.feedback-flutuante');
+        if (existing) existing.remove();
+
+        const div = document.createElement('div');
+        div.className = 'feedback-flutuante';
+        div.textContent = mensagem;
+        div.style.cssText = `
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0f172a;
+            color: #f59e0b;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            z-index: 9999;
+            animation: fadeInUp 0.4s ease;
+            border: 1px solid #f59e0b;
+        `;
+        document.body.appendChild(div);
+
+        setTimeout(() => {
+            div.style.opacity = '0';
+            div.style.transition = 'opacity 0.5s';
+            setTimeout(() => div.remove(), 500);
+        }, 2500);
+    }
+
+    // ============================================================
+    // BUSCA
+    // ============================================================
+    function adicionarBusca() {
+        const input = document.getElementById('busca-tags');
+        if (!input) return;
+
+        input.addEventListener('input', function() {
+            STATE.buscaAtual = this.value.trim().toLowerCase();
+            aplicarFiltros();
+        });
+    }
+
+    // ============================================================
+    // FILTROS
+    // ============================================================
+    function adicionarFiltros() {
+        document.querySelectorAll('.filtro-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filtro-btn').forEach(b => {
+                    b.style.background = 'transparent';
+                    b.style.color = '#64748b';
+                    b.classList.remove('ativo');
+                });
+                this.style.background = '#0f172a';
+                this.style.color = '#f59e0b';
+                this.classList.add('ativo');
+
+                STATE.filtroAtual = this.dataset.filtro;
+                aplicarFiltros();
+            });
+        });
+    }
+
+    // ============================================================
+    // APLICAR FILTROS
+    // ============================================================
+    function aplicarFiltros() {
+        const tabelas = document.querySelectorAll('.tabela-container');
+        
+        tabelas.forEach(tabela => {
+            const rows = tabela.querySelectorAll('tbody tr');
+            const cabecalho = tabela.closest('h2');
+            
+            // Verifica se a tabela tem conteúdo visível
+            let temVisivel = false;
+
+            rows.forEach(row => {
+                const tag = row.querySelector('.tag-code');
+                const textoTag = tag ? tag.textContent.trim().toLowerCase() : '';
+                const tagNome = tag ? tag.textContent.trim() : '';
+                
+                // Busca
+                const matchBusca = STATE.buscaAtual === '' || 
+                    textoTag.includes(STATE.buscaAtual) ||
+                    row.textContent.toLowerCase().includes(STATE.buscaAtual);
+
+                // Filtro por categoria
+                let matchFiltro = true;
+                if (STATE.filtroAtual !== 'todos') {
+                    // Obtém a categoria pelo cabeçalho da seção
+                    const secao = tabela.closest('div.tabela-container');
+                    const header = secao ? secao.previousElementSibling : null;
+                    if (header && header.tagName === 'H2') {
+                        const textoHeader = header.textContent.toLowerCase();
+                        const categorias = {
+                            'estrutura': ['estrutura do documento', 'documento'],
+                            'semantica': ['semântica', 'semantica', 'estrutura semântica'],
+                            'texto': ['texto', 'listas', 'inline'],
+                            'midia': ['mídia', 'midia', 'áudio', 'vídeo', 'imagem'],
+                            'formulario': ['formulários', 'formulario', 'form'],
+                            'tabela': ['tabelas', 'tabela']
+                        };
+                        const palavras = categorias[STATE.filtroAtual] || [];
+                        matchFiltro = palavras.some(pal => textoHeader.includes(pal));
+                    }
+                }
+
+                const visivel = matchBusca && matchFiltro;
+                row.style.display = visivel ? '' : 'none';
+                if (visivel) temVisivel = true;
+            });
+
+            // Mostra/esconde a tabela inteira se não tiver linhas visíveis
+            if (cabecalho) {
+                cabecalho.style.display = temVisivel ? '' : 'none';
+            }
+            tabela.style.display = temVisivel ? '' : 'none';
+        });
+
+        atualizarContadores();
+    }
+
+    // ============================================================
+    // MODO ESTUDO
+    // ============================================================
+    function adicionarEventosTags() {
+        const btnModo = document.getElementById('btn-modo-estudo');
+        if (btnModo) {
+            btnModo.addEventListener('click', function() {
+                STATE.modoEstudo = !STATE.modoEstudo;
+                salvarEstado();
+                aplicarModoEstudo();
+                this.textContent = STATE.modoEstudo ? '📖 Modo Estudo Ativo' : '🎯 Ativar Modo Estudo';
+                this.style.background = STATE.modoEstudo ? '#fef3c7' : 'transparent';
+                this.style.color = STATE.modoEstudo ? '#b45309' : '#64748b';
+                mostrarFeedback(STATE.modoEstudo ? '📖 Modo Estudo ativado! Escondendo exemplos...' : '📖 Modo Estudo desativado');
+            });
+        }
+
+        // Botão favoritos
+        const btnFav = document.getElementById('btn-favoritos');
+        if (btnFav) {
+            btnFav.addEventListener('click', function() {
+                if (STATE.favoritos.length === 0) {
+                    mostrarFeedback('⭐ Nenhuma tag favoritada ainda!');
+                    return;
+                }
+                mostrarFeedback('⭐ ' + STATE.favoritos.length + ' tags favoritadas!');
+                // Destaca as tags favoritadas
+                document.querySelectorAll('.tabela-container tbody tr').forEach(row => {
+                    const tag = row.querySelector('.tag-code');
+                    if (tag && STATE.favoritos.includes(tag.textContent.trim())) {
+                        row.style.background = '#fef3c7';
+                        row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                });
+            });
+        }
+
+        // Botão limpar filtros
+        const btnLimpar = document.getElementById('btn-limpar-filtros');
+        if (btnLimpar) {
+            btnLimpar.addEventListener('click', function() {
+                document.querySelectorAll('.filtro-btn').forEach(b => {
+                    b.style.background = 'transparent';
+                    b.style.color = '#64748b';
+                    b.classList.remove('ativo');
+                });
+                const btnTodos = document.querySelector('.filtro-btn[data-filtro="todos"]');
+                if (btnTodos) {
+                    btnTodos.style.background = '#0f172a';
+                    btnTodos.style.color = '#f59e0b';
+                    btnTodos.classList.add('ativo');
+                }
+                STATE.filtroAtual = 'todos';
+                document.getElementById('busca-tags').value = '';
+                STATE.buscaAtual = '';
+                aplicarFiltros();
+                mostrarFeedback('🔄 Filtros limpos!');
+            });
+        }
+    }
+
+    // ============================================================
+    // APLICAR MODO ESTUDO
+    // ============================================================
+    function aplicarModoEstudo() {
+        document.querySelectorAll('.tabela-container tbody tr').forEach(row => {
+            // Esconde/mostra os exemplos (coluna "Exemplo")
+            const tdExemplo = row.querySelector('td:nth-child(3)');
+            if (tdExemplo) {
+                tdExemplo.style.display = STATE.modoEstudo ? 'none' : '';
+                tdExemplo.style.opacity = STATE.modoEstudo ? '0.3' : '1';
+            }
+            
+            // Esconde/mostra a coluna "Onde fica"
+            const tdOnde = row.querySelector('td:last-child');
+            if (tdOnde) {
+                // Mantém os botões de ação, mas esconde o texto
+                const acoes = tdOnde.querySelector('.tag-acoes');
+                const textoOnde = tdOnde.textContent;
+                if (STATE.modoEstudo) {
+                    tdOnde.style.color = '#94a3b8';
+                    tdOnde.style.fontSize = '0.8rem';
+                    tdOnde.style.fontStyle = 'italic';
+                    // Mantém os botões visíveis
+                    if (acoes) {
+                        acoes.style.display = 'flex';
+                    }
+                } else {
+                    tdOnde.style.color = '';
+                    tdOnde.style.fontSize = '';
+                    tdOnde.style.fontStyle = '';
+                }
+            }
+        });
+
+        // Destaque visual do modo estudo
+        const tables = document.querySelectorAll('.tabela-container');
+        tables.forEach(table => {
+            table.style.border = STATE.modoEstudo ? '2px dashed #f59e0b' : '1px solid #e2e8f0';
+            table.style.background = STATE.modoEstudo ? '#faf8f0' : '';
+        });
+    }
+
+    // ============================================================
+    // ATUALIZAR CONTADORES
+    // ============================================================
+    function atualizarContadores() {
+        const total = document.querySelectorAll('.tabela-container tbody tr').length;
+        const visiveis = document.querySelectorAll('.tabela-container tbody tr[style*="display: none"]');
+        const visiveisCount = total - visiveis.length;
+
+        // Atualiza o badge de favoritos
+        const btnFav = document.getElementById('btn-favoritos');
+        if (btnFav) {
+            btnFav.textContent = `⭐ Favoritos (${STATE.favoritos.length})`;
+        }
+
+        // Adiciona contador no título
+        const titulo = document.querySelector('h1');
+        if (titulo) {
+            const contador = titulo.querySelector('.contador-tags') || document.createElement('span');
+            contador.className = 'contador-tags';
+            contador.style.cssText = `
+                font-size: 0.9rem;
+                font-weight: 400;
+                color: #94a3b8;
+                margin-left: 12px;
+            `;
+            contador.textContent = `${visiveisCount} tags visíveis (${total} total)`;
+            if (!titulo.querySelector('.contador-tags')) {
+                titulo.appendChild(contador);
+            }
+        }
+    }
+
+    // ============================================================
+    // ESTILOS ADICIONAIS (injeção CSS)
+    // ============================================================
+    function injetarEstilos() {
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInUp {
+                from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+                to { opacity: 1; transform: translateX(-50%) translateY(0); }
+            }
+            
+            .filtro-btn:hover {
+                background: #1e293b !important;
+                color: white !important;
+            }
+            
+            .filtro-btn.ativo:hover {
+                background: #0f172a !important;
+                color: #f59e0b !important;
+            }
+            
+            .tabela-container tbody tr {
+                transition: all 0.3s ease;
+            }
+            
+            .tabela-container tbody tr:hover {
+                background: #f8fafc !important;
+            }
+            
+            #busca-tags:focus {
+                outline: none;
+                border-color: #f59e0b !important;
+                box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+            }
+            
+            .tag-acoes button:hover {
+                background: #e2e8f0 !important;
+                transform: scale(1.1);
+            }
+            
+            .toolbar-estudo input::placeholder {
+                color: #94a3b8;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    // ============================================================
+    // INICIAR
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', function() {
+        injetarEstilos();
+        init();
+    });
+
+    // Caso o DOM já esteja carregado
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        injetarEstilos();
+        init();
+    }
+
+})();
